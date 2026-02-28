@@ -9,7 +9,7 @@ const initializeSocket = (io) => {
 
     socket.on("disconnect", () => {
       socketService.handleDisconnect(io, socket);
-      console.log("❌ User disconnected:", socket.id);
+      console.log("User disconnected:", socket.id);
     });
   });
 };

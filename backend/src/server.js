@@ -22,7 +22,7 @@ const io = new Server(server, {
 // Connect DB
 connectDB();
 
-// 🔐 Socket JWT Authentication
+//  Socket JWT Authentication
 io.use((socket, next) => {
   const token = socket.handshake.auth?.token;
   if (!token) return next(new Error("Unauthorized"));
