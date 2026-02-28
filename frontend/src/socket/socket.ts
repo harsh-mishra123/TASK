@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 export const createSocket = (token: string) => {
-  return io("http://localhost:5555", {
+  return io("https://task-1-12j1.onrender.com/", {
     auth: {
       token,
     },
