@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
-// =====================
 // Participant Schema
-// =====================
+
 const participantSchema = new mongoose.Schema({
   userId: { type: String },
   username: { type: String, required: true },
@@ -13,9 +12,9 @@ const participantSchema = new mongoose.Schema({
   },
 });
 
-// =====================
-// Message Schema (DEFINE FIRST)
-// =====================
+
+// Message Schema 
+
 const messageSchema = new mongoose.Schema({
   username: String,
   message: String,
@@ -25,9 +24,9 @@ const messageSchema = new mongoose.Schema({
   },
 });
 
-// =====================
+
 // Room Schema
-// =====================
+
 const roomSchema = new mongoose.Schema(
   {
     roomCode: { type: String, required: true, unique: true },

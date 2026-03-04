@@ -1,13 +1,12 @@
 const Room = require("../models/Room.model");
 
 const activeUsers = new Map();
-// socketId -> { roomCode, username }
+
 
 const registerSocketEvents = (io, socket) => {
 
-  // =========================
   // JOIN ROOM
-  // =========================
+
   socket.on("join-room", async ({ roomCode }) => {
     try {
       const username = socket.user.username;
@@ -17,7 +16,7 @@ const registerSocketEvents = (io, socket) => {
       socket.join(roomCode);
       activeUsers.set(socket.id, { roomCode, username });
 
-      // Send full initial state (video + chat + participants)
+      // Send initial state
       socket.emit("initial-state", {
         currentVideoId: room.currentVideoId,
         isPlaying: room.isPlaying,
@@ -47,33 +46,32 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+ 
   // PLAY
-  // =========================
+
   socket.on("play", async () => {
     await handlePlaybackUpdate(io, socket, { isPlaying: true });
   });
 
 
-  // =========================
   // PAUSE
-  // =========================
+  
   socket.on("pause", async () => {
     await handlePlaybackUpdate(io, socket, { isPlaying: false });
   });
 
 
-  // =========================
+
   // SEEK
-  // =========================
+
   socket.on("seek", async ({ currentTime }) => {
     await handlePlaybackUpdate(io, socket, { currentTime });
   });
 
 
-  // =========================
+ 
   // CHANGE VIDEO
-  // =========================
+ 
   socket.on("change-video", async ({ videoId }) => {
     await handlePlaybackUpdate(io, socket, {
       currentVideoId: videoId,
@@ -83,9 +81,9 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+  
   // ASSIGN MODERATOR
-  // =========================
+ 
   socket.on("assign-moderator", async ({ roomCode, targetUsername }) => {
     try {
       const user = activeUsers.get(socket.id);
@@ -122,9 +120,9 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+ 
   // REMOVE PARTICIPANT
-  // =========================
+ 
   socket.on("remove-participant", async ({ roomCode, targetUsername }) => {
     try {
       const user = activeUsers.get(socket.id);
@@ -163,9 +161,9 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+
   // TRANSFER HOST
-  // =========================
+  
   socket.on("transfer-host", async ({ roomCode, username: targetUsername }) => {
     try {
       const user = activeUsers.get(socket.id);
@@ -205,9 +203,9 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+  
   // SEND MESSAGE
-  // =========================
+
   socket.on("send-message", async ({ text }) => {
     try {
       const user = activeUsers.get(socket.id);
@@ -235,9 +233,9 @@ const registerSocketEvents = (io, socket) => {
   });
 
 
-  // =========================
+ 
   // TYPING
-  // =========================
+  
   socket.on("typing", () => {
     const user = activeUsers.get(socket.id);
     if (!user) return;
@@ -258,9 +256,9 @@ const registerSocketEvents = (io, socket) => {
 };
 
 
-// =========================
+
 // PLAYBACK UPDATE HANDLER
-// =========================
+
 const handlePlaybackUpdate = async (io, socket, updates) => {
   try {
     const user = activeUsers.get(socket.id);
@@ -289,9 +287,9 @@ const handlePlaybackUpdate = async (io, socket, updates) => {
 };
 
 
-// =========================
+
 // DISCONNECT HANDLER
-// =========================
+
 const handleDisconnect = async (io, socket) => {
   try {
     const user = activeUsers.get(socket.id);

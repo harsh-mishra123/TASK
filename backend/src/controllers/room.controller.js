@@ -3,7 +3,7 @@ const roomService = require("../services/room.service");
 
 const createRoom = async (req, res) => {
   try {
-    const username = req.user.username; //  from JWT
+    const username = req.user.username; 
     const room = await roomService.createRoom(username);
     res.status(201).json(room);
   } catch (error) {
